@@ -19,11 +19,23 @@ function Homescreen() {
     const [error, seterror] = useState();
     const [searchKey,setSearchKey] = useState('')
     const [type,setType] = useState('all') 
+    const user = JSON.parse(localStorage.getItem('currentUser')).data
+    // useEffect(() => {
+    //     console.log("heelloo")
+    //     if (!user) {
+    //         window.location.href = '/login'
+    //     }
+    // }, [])
+    console.log(user)
     useEffect(() => {
         async function fetchData() {
             try {
                 setloading(true);
-                const data = (await axios.get("http://localhost:5000/api/rooms/getAllRooms")).data;
+                const data = (await axios.get("http://localhost:5000/api/rooms/getAllRooms", {
+                    headers: {
+                        'Authorization': `Bearer ${user.token}`
+                    }
+                })).data;
                 setduplicateRooms(data);
                 setrooms(data);
                 setloading(false);

@@ -54,9 +54,9 @@ function Register() {
                     <div className="bs">
                         <h2>Register</h2>
                         <input type='text' className='form-control' placeholder='name' value={name} onChange={(e) => setName(e.target.value)}/>
-                        <input type='text' className='form-control' placeholder='email' value={email} onChange={(e) => setEmail(e.target.value)}/>
-                        <input type='text' className='form-control' placeholder='password' value={password} onChange={(e) => setPassword(e.target.value)}/>
-                        <input type='text' className='form-control' placeholder='confirm password' value={cpassword} onChange={(e) => setCpassword(e.target.value)}/>
+                        <input type='email' className='form-control' placeholder='email' value={email} onChange={(e) => setEmail(e.target.value)}/>
+                        <input type='password' className='form-control' placeholder='password' value={password} onChange={(e) => setPassword(e.target.value)}/>
+                        <input type='password' className='form-control' placeholder='confirm password' value={cpassword} onChange={(e) => setCpassword(e.target.value)}/>
                         <button className="btn btn-primary mt-3" onClick={register} style={{backgroundColor: 'black', border: 'none'}}>Register</button>
                     </div>
                 </div>

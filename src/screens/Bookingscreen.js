@@ -14,6 +14,8 @@ function Bookingscreen() {
 
     const totalDays = moment.duration(moment(toDate,'DD-MM-YYYY').diff(moment(fromDate,'DD-MM-YYYY'))).asDays()+1
     const [totalAmount,setTotalAmount] = useState()
+    const user = JSON.parse(localStorage.getItem('currentUser')).data
+    console.log(user)
     useEffect(() => {
         if(!localStorage.getItem('currentUser')){
             window.location.reload='/login'
@@ -21,7 +23,11 @@ function Bookingscreen() {
         async function fetchData() {
             try {
                 setloading(true);
-                const data = (await axios.post("http://localhost:5000/api/rooms/getroombyid", {roomid: roomid})).data;
+                const data = (await axios.post("http://localhost:5000/api/rooms/getroombyid", {roomid: roomid}, {
+                    headers: {
+                        'Authorization': `Bearer ${user.token}`
+                    }
+                })).data;
                 setroom(data);
                 setTotalAmount(totalDays*data.rentPerDay)
                 setloading(false);
@@ -84,18 +90,29 @@ function Bookingscreen() {
         }
     };
 
+
     async function bookRoom() {
+        const token = JSON.parse(localStorage.getItem('currentUser')).data.token
+        const tmp = JSON.parse(localStorage.getItem('currentUser')).data.id
+        console.log(tmp)
+        console.log(token)
         const bookingDetails = {
-            room,
-            userid: JSON.parse(localStorage.getItem('currentUser')).data._id,
+            roomname:room.name,
+            roomid:room._id,
+            userid: JSON.parse(localStorage.getItem('currentUser')).data.id,
             fromDate,
             toDate,
             totalAmount,
-            totalDays
+            totalDays,
+            token
         }
 
         try {
-            const result = await axios.post("http://localhost:5000/api/bookings/bookroom", bookingDetails)
+            const result = await axios.post("http://localhost:5000/api/bookings/bookroom", bookingDetails, {
+                headers: {
+                    'Authorization': `Bearer ${user.token}`
+                }
+            })
         } catch (error) {
             
         }

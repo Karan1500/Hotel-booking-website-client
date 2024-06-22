@@ -19,6 +19,7 @@ function Login() {
             setLoading(true)
             const result = await axios.post("http://localhost:5000/api/users/login",user)
             setLoading(false)
+            console.log(result)
             localStorage.setItem('currentUser',JSON.stringify(result))
             window.location.href='/home'   
         } catch (error) {
@@ -36,8 +37,8 @@ function Login() {
                     {error && (<Error message='Invalid credentials'/>)}
                     <div className="bs">
                         <h2>Login</h2>
-                        <input type='text' className='form-control' placeholder='email' value={email} onChange={(e) => setEmail(e.target.value)}/>
-                        <input type='text' className='form-control' placeholder='password' value={password} onChange={(e) => setPassword(e.target.value)}/>
+                        <input type='email' className='form-control' placeholder='email' value={email} onChange={(e) => setEmail(e.target.value)}/>
+                        <input type='password' className='form-control' placeholder='password' value={password} onChange={(e) => setPassword(e.target.value)}/>
                         <button className="btn btn-primary mt-3" onClick={login} style={{backgroundColor: 'black', border: 'none'}}>Login</button>
                     </div>
                 </div>

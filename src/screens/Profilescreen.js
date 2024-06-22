@@ -5,19 +5,21 @@ import Loader from '../components/Loader';
 import Error from '../components/Error';
 import Swal from 'sweetalert2'
 import { Divider, Flex, Tag } from 'antd';
+import { useNavigate } from 'react-router-dom';
 
 const { TabPane } = Tabs;
 function Profilescreen() {
+    // const navigate=useNavigate()
+    // useEffect(() => {
+    //     console.log("heelloo")
+    //     if (!(JSON.parse(localStorage.getItem('currentUser')))) {
+    //         navigate('/login')
+    //     }
 
+    // }, [])
     const user = JSON.parse(localStorage.getItem('currentUser')).data
 
-    useEffect(() => {
-        console.log("heelloo")
-        if (!user) {
-            window.location.href = '/login'
-        }
-
-    }, [])
+    
 
     return (
         <div className='ml-3 mt-3'>
@@ -54,10 +56,14 @@ export default Profilescreen
 //     }
 // }
 
-async function CancelBooking(bookingid, roomid, setloading, seterror, setBookings) {
+async function CancelBooking(bookingid, roomid, setloading, seterror, setBookings,token) {
     try {
         setloading(true);
-        const result = await axios.post('http://localhost:5000/api/bookings/cancelbooking', { bookingid, roomid }).data;
+        const result = await axios.post('http://localhost:5000/api/bookings/cancelbooking', { bookingid, roomid}, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }).data;
         console.log(result);
         setBookings(prevBookings =>
             prevBookings.map(booking =>
@@ -78,14 +84,20 @@ async function CancelBooking(bookingid, roomid, setloading, seterror, setBooking
 
 export function MyBookings() {
     const user = JSON.parse(localStorage.getItem('currentUser')).data
+    console.log(user)
     const [bookings, setBookings] = useState([])
     const [loading, setloading] = useState(false);
     const [error, seterror] = useState();
+    console.log(user)
     useEffect(() => {
         const fetchBookings = async () => {
             try {
                 setloading(true)
-                const rooms = await (await axios.post("http://localhost:5000/api/bookings/getbookingsbyuserid", { userid: user._id })).data
+                const rooms = await (await axios.post("http://localhost:5000/api/bookings/getbookingsbyuserid", { userid: user.id}, {
+                    headers: {
+                        'Authorization': `Bearer ${user.token}`
+                    }
+                })).data
                 console.log(rooms)
                 setBookings(rooms)
                 setloading(false)
@@ -113,7 +125,7 @@ export function MyBookings() {
                             <p><b>Amount</b>: {booking.totalAmount}</p>
                             <p><b>Status</b>: {booking.status==='cancelled'?(<Tag color="red">CANCELLED</Tag>):(<Tag color="green">CONFIRMED</Tag>)}</p>
                             {booking.status!=='cancelled' && (<div className='text-right'>
-                                <button className='btn btn-primary' onClick={() => CancelBooking(booking._id,booking.roomid,setloading,seterror,setBookings)}>CANCEL BOOKING</button>
+                                <button className='btn btn-primary' onClick={() => CancelBooking(booking._id,booking.roomid,setloading,seterror,setBookings,user.token)}>CANCEL BOOKING</button>
                             </div>)}
                         </div>
                         )

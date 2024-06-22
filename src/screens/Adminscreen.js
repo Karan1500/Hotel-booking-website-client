@@ -45,11 +45,18 @@ export function Bookings() {
     const [bookings, setBookings] = useState([])
     const [loading, setloading] = useState(false)
     const [error, seterror] = useState()
+    const user = JSON.parse(localStorage.getItem('currentUser')).data
+    console.log(user)
+    console.log(user.token)
     useEffect(() => {
         const fetchBookings = async () => {
             try {
                 setloading(true)
-                const result = (await axios.get('http://localhost:5000/api/bookings/getAllBookings')).data
+                const result = (await axios.get('http://localhost:5000/api/bookings/getAllBookings', {
+                    headers: {
+                        'Authorization': `Bearer ${user.token}`
+                    }
+                })).data
                 setBookings(result)
                 setloading(false)
             } catch (error) {
@@ -59,7 +66,7 @@ export function Bookings() {
             }
         }
         fetchBookings()
-    },[])
+    },[user.token])
     return (
         <div className='row'>
             <div className='col-md-12'>
@@ -100,11 +107,16 @@ export function Rooms() {
     const [rooms, setRooms] = useState([])
     const [loading, setloading] = useState(false)
     const [error, seterror] = useState()
+    const user = JSON.parse(localStorage.getItem('currentUser')).data
     useEffect(() => {
         const fetchRooms = async () => {
             try {
                 setloading(true)
-                const result = (await axios.get('http://localhost:5000/api/rooms/getAllRooms')).data
+                const result = (await axios.get('http://localhost:5000/api/rooms/getAllRooms', {
+                    headers: {
+                        'Authorization': `Bearer ${user.token}`
+                    }
+                })).data
                 setRooms(result)
                 setloading(false)
             } catch (error) {
@@ -155,11 +167,16 @@ export function Users() {
     const [users, setUsers] = useState([])
     const [loading, setloading] = useState(false)
     const [error, seterror] = useState()
+    const user = JSON.parse(localStorage.getItem('currentUser')).data
     useEffect(() => {
         const fetchUsers = async () => {
             try {
                 setloading(true)
-                const result = (await axios.get('http://localhost:5000/api/users/getAllUsers')).data
+                const result = (await axios.get('http://localhost:5000/api/users/getAllUsers', {
+                    headers: {
+                        'Authorization': `Bearer ${user.token}`
+                    }
+                })).data
                 setUsers(result)
                 setloading(false)
             } catch (error) {
@@ -215,7 +232,7 @@ export function Addroom() {
     const[imageUrl1, setimageUrl1] = useState();
     const[imageUrl2, setimageUrl2] = useState();
     const[imageUrl3, setimageUrl3] = useState();
-
+    const user = JSON.parse(localStorage.getItem('currentUser')).data
     async function addRoom(){
 
         const newroom = {
@@ -225,12 +242,17 @@ export function Addroom() {
             rentPerDay,
             imageUrls: [imageUrl1, imageUrl2, imageUrl3],
             type,
-            description
+            description,
+            token: user.token
         }
 
         try {
             setloading(true);
-            const response = await axios.post('http://localhost:5000/api/rooms/addroom', newroom);
+            const response = await axios.post('http://localhost:5000/api/rooms/addroom', newroom, {
+                headers: {
+                    'Authorization': `Bearer ${user.token}`
+                }
+            });
             console.log(response.data);
             setloading(false);
             Swal.fire('Congrats', 'New room added successfully', 'success').then(result=>{
