@@ -102,14 +102,14 @@ function Homescreen() {
     }
 
     return (
-        <div className="container">
+        <div className="container btm">
 
-            <div className="row mt-5 bs">
-                <div className="col-md-3">
+            <div className="row mt-5 bs justify-content-center">
+                <div className="col-md-3 newest">
                     <RangePicker format='DD-MM-YYYY' onChange={filterByDate} />
                 </div>
                 <div className="col-md-3">
-                    <input type="text" className="form-control" placeholder="search rooms" 
+                    <input type="text" className="form-control" placeholder="search rooms"
                     value={searchKey} onChange={(e) => setSearchKey(e.target.value)} onKeyUp={filterBySearch}/>
                 </div>
                 <div className="col-md-3">

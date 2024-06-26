@@ -119,3 +119,11 @@ p {
   height: 65vh;
   padding-top: 100px;
 }
+
+.newest{
+  margin-top: -0.6rem;
+}
+
+.btm{
+  padding-bottom: 4rem;
+}
