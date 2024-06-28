@@ -37,7 +37,7 @@ function Login() {
                     {error && (<Error message='Invalid credentials'/>)}
                     <div className="bs">
                         <h2>Login</h2>
-                        <input type='email' className='form-control' placeholder='email' value={email} onChange={(e) => setEmail(e.target.value)}/>
+                        <input type='email' className='form-control newlog' placeholder='email' value={email} onChange={(e) => setEmail(e.target.value)}/>
                         <input type='password' className='form-control' placeholder='password' value={password} onChange={(e) => setPassword(e.target.value)}/>
                         <button className="btn btn-primary mt-3" onClick={login} style={{backgroundColor: 'black', border: 'none'}}>Login</button>
                     </div>
