@@ -10,6 +10,7 @@ function Room({room, fromDate, toDate}){
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+    const average = (room.rating.reduce((acc, curr) => acc + curr, 0) / room.rating.length).toFixed(1);
 
     return(
         <div className="row bs">
@@ -23,6 +24,7 @@ function Room({room, fromDate, toDate}){
                     <p>Max Count: {room.maxCount}</p>
                     <p>Phone Number: {room.phoneNumber}</p>
                     <p>Room Type: {room.type}</p>
+                    <p>Room Rating: {average}</p>
                 </b>
 
                 <div style={{float: 'right'}}>
@@ -39,9 +41,9 @@ function Room({room, fromDate, toDate}){
                 </Modal.Header>
                 <Modal.Body>
                 <Carousel prevLabel='' nextLabel=''>
-                        {room.imageUrls.map(url=>{
-                            return <Carousel.Item>
-                            <img className="d-block w-100 bigimg" src={url} />
+                        {room.imageUrls.map((url, index) => {
+                            return <Carousel.Item key={index}>
+                            <img className="d-block w-100 bigimg" src={url} alt={`Room image ${index + 1}`} />
                           </Carousel.Item>
                         })}
                 </Carousel>
