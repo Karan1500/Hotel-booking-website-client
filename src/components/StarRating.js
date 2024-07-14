@@ -4,7 +4,6 @@ import { FaStar } from 'react-icons/fa';
 
 const StarRating = ({ rating, setRating }) => {
   const [hover, setHover] = useState(null);
-
   return (
     <div>
       {[...Array(5)].map((star, index) => {

@@ -7,6 +7,7 @@ import Loader from '../components/Loader';
 import Error from '../components/Error';
 import Swal from 'sweetalert2';
 import StarRating from '../components/StarRating';
+import { TbRubberStampOff } from 'react-icons/tb';
 
 const { TabPane } = Tabs;
 
@@ -66,7 +67,8 @@ export function MyBookings() {
   const [error, seterror] = useState();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedBooking, setSelectedBooking] = useState(null);
-  const [rating, setRating] = useState(0);
+  const [rating, setRating] = useState(TbRubberStampOff);
+  const [show, setShow] = useState(false);
 
   useEffect(() => {
     const fetchBookings = async () => {
@@ -95,6 +97,7 @@ export function MyBookings() {
   };
 
   const handleOk = async () => {
+
     try {
       await axios.post("http://localhost:5000/api/bookings/ratebooking", {
         bookingid: selectedBooking._id,
@@ -105,6 +108,7 @@ export function MyBookings() {
         }
       });
       setIsModalVisible(false);
+      setShow(false);
       Swal.fire('Thank you!', 'Your rating has been submitted.', 'success');
     } catch (error) {
       console.error(error);
